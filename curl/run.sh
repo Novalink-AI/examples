@@ -2,6 +2,7 @@
 # Runs a published workflow and prints the result. Usage: ./run.sh "some text" or ./run.sh '{"name": "Ada"}'
 set -euo pipefail
 cd "$(dirname "$0")"
+# shellcheck source=/dev/null  # .env is local and optional
 [ -f .env ] && set -a && . ./.env && set +a
 : "${NOVALINK_API_KEY:?Set NOVALINK_API_KEY in .env}" "${NOVALINK_WORKFLOW_ID:?Set NOVALINK_WORKFLOW_ID in .env}"
 API="${NOVALINK_API_URL:-https://api.novalink.live}"
