@@ -1,0 +1,18 @@
+{
+  "name": "novalink-examples-typescript",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.6"
+  },
+  "scripts": {
+    "run-workflow": "tsx --env-file=.env src/run-workflow.ts",
+    "stream-workflow": "tsx --env-file=.env src/stream-workflow.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}
