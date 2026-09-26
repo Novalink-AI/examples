@@ -1,4 +1,4 @@
-"""A small client for the Novalink Workflow API: run a published workflow and get its output."""
+"""A small client for the Worfilo Workflow API: run a published workflow and get its output."""
 
 import json
 import os
@@ -11,18 +11,18 @@ import httpx
 FINISHED = ("succeeded", "failed", "cancelled")
 
 
-class NovalinkError(Exception):
+class WorfiloError(Exception):
     def __init__(self, message: str, status: int) -> None:
         super().__init__(message)
         self.status = status
 
 
-class Novalink:
+class Worfilo:
     def __init__(self, api_key: str | None = None, base_url: str | None = None) -> None:
-        api_key = api_key or os.environ.get("NOVALINK_API_KEY")
+        api_key = api_key or os.environ.get("WORFILO_API_KEY")
         if not api_key:
-            raise RuntimeError("Set NOVALINK_API_KEY, e.g. in .env")
-        self.base_url = (base_url or os.environ.get("NOVALINK_API_URL") or "https://api.novalink.live").rstrip("/")
+            raise RuntimeError("Set WORFILO_API_KEY, e.g. in .env")
+        self.base_url = (base_url or os.environ.get("WORFILO_API_URL") or "https://api.worfilo.com").rstrip("/")
         self.http = httpx.Client(headers={"Authorization": f"Bearer {api_key}"}, timeout=70)
 
     def _check(self, response: httpx.Response) -> httpx.Response:
@@ -31,7 +31,7 @@ class Novalink:
                 detail = response.json().get("detail")
             except ValueError:
                 detail = response.text
-            raise NovalinkError(f"Novalink answered {response.status_code}: {detail}", response.status_code)
+            raise WorfiloError(f"Worfilo answered {response.status_code}: {detail}", response.status_code)
         return response
 
     def run(self, workflow_id: str, input: Any, timeout: float = 30, poll_every: float = 1.0) -> dict[str, Any]:
@@ -64,7 +64,7 @@ def input_from(args: list[str]) -> Any:
     """JSON when it parses, otherwise text, which workflows receive as {"message": text}."""
     raw = " ".join(args).strip()
     if not raw:
-        return "Hello from the Novalink examples"
+        return "Hello from the Worfilo examples"
     try:
         return json.loads(raw)
     except ValueError:
@@ -72,7 +72,7 @@ def input_from(args: list[str]) -> Any:
 
 
 def workflow_id() -> str:
-    value = os.environ.get("NOVALINK_WORKFLOW_ID")
+    value = os.environ.get("WORFILO_WORKFLOW_ID")
     if not value:
-        raise RuntimeError("Set NOVALINK_WORKFLOW_ID, e.g. in .env")
+        raise RuntimeError("Set WORFILO_WORKFLOW_ID, e.g. in .env")
     return value

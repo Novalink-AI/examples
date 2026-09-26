@@ -34,7 +34,7 @@ jobs:
       - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
       - run: uvx ruff check .
       - run: uvx ruff format --check .
-      - run: uv run python -m py_compile novalink.py run_workflow.py stream_workflow.py
+      - run: uv run python -m py_compile worfilo.py run_workflow.py stream_workflow.py
 
   curl:
     runs-on: ubuntu-latest

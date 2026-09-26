@@ -1,4 +1,4 @@
-// A small client for the Novalink Workflow API: run a published workflow and get its output.
+// A small client for the Worfilo Workflow API: run a published workflow and get its output.
 
 export type RunStatus = "queued" | "running" | "succeeded" | "failed" | "cancelled";
 
@@ -22,7 +22,7 @@ export type StreamEvent =
 
 const FINISHED: RunStatus[] = ["succeeded", "failed", "cancelled"];
 
-export class NovalinkError extends Error {
+export class WorfiloError extends Error {
   constructor(
     message: string,
     readonly status: number,
@@ -31,12 +31,12 @@ export class NovalinkError extends Error {
   }
 }
 
-export class Novalink {
+export class Worfilo {
   constructor(
-    private readonly apiKey = process.env.NOVALINK_API_KEY ?? "",
-    private readonly baseUrl = process.env.NOVALINK_API_URL ?? "https://api.novalink.live",
+    private readonly apiKey = process.env.WORFILO_API_KEY ?? "",
+    private readonly baseUrl = process.env.WORFILO_API_URL ?? "https://api.worfilo.com",
   ) {
-    if (!this.apiKey) throw new Error("Set NOVALINK_API_KEY, e.g. in .env");
+    if (!this.apiKey) throw new Error("Set WORFILO_API_KEY, e.g. in .env");
   }
 
   private headers(): Record<string, string> {
@@ -48,7 +48,7 @@ export class Novalink {
     if (!response.ok) {
       const body = (await response.json().catch(() => ({}))) as { detail?: unknown };
       const detail = typeof body.detail === "string" ? body.detail : JSON.stringify(body.detail ?? response.statusText);
-      throw new NovalinkError(`Novalink answered ${response.status}: ${detail}`, response.status);
+      throw new WorfiloError(`Worfilo answered ${response.status}: ${detail}`, response.status);
     }
     return response;
   }
@@ -98,7 +98,7 @@ export class Novalink {
 /** The command line input: JSON when it parses, otherwise text, which workflows receive as {"message": text}. */
 export function inputFrom(args: string[]): unknown {
   const raw = args.join(" ").trim();
-  if (!raw) return "Hello from the Novalink examples";
+  if (!raw) return "Hello from the Worfilo examples";
   try {
     return JSON.parse(raw);
   } catch {
@@ -107,7 +107,7 @@ export function inputFrom(args: string[]): unknown {
 }
 
 export function workflowId(): string {
-  const id = process.env.NOVALINK_WORKFLOW_ID;
-  if (!id) throw new Error("Set NOVALINK_WORKFLOW_ID, e.g. in .env");
+  const id = process.env.WORFILO_WORKFLOW_ID;
+  if (!id) throw new Error("Set WORFILO_WORKFLOW_ID, e.g. in .env");
   return id;
 }

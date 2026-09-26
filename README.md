@@ -1,11 +1,11 @@
-# Novalink Examples
+# Worfilo Examples
 
-[![CI](https://github.com/Novalink-AI/examples/actions/workflows/ci.yml/badge.svg)](https://github.com/Novalink-AI/examples/actions/workflows/ci.yml)
+[![CI](https://github.com/Worfilo/examples/actions/workflows/ci.yml/badge.svg)](https://github.com/Worfilo/examples/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Reference clients for calling [Novalink](https://novalink.live) workflows from your own applications through the Workflow API.
+Reference clients for calling [Worfilo](https://worfilo.com) workflows from your own applications through the Workflow API.
 
-Every published Novalink workflow is an HTTP endpoint. These examples show how to call one from TypeScript, Python and the shell, covering three patterns: waiting for the result, polling long-running runs, and streaming progress as it happens.
+Every published Worfilo workflow is an HTTP endpoint. These examples show how to call one from TypeScript, Python and the shell, covering three patterns: waiting for the result, polling long-running runs, and streaming progress as it happens.
 
 ## Contents
 
@@ -31,8 +31,8 @@ Each client is small enough to copy into your own project.
 
 ## Prerequisites
 
-1. A [Novalink](https://novalink.live) account with a **published** workflow. The API always runs the active published version, never the draft.
-2. An **API key**, created under **API keys** in Novalink. Restrict each key to the workflows it needs.
+1. A [Worfilo](https://worfilo.com) account with a **published** workflow. The API always runs the active published version, never the draft.
+2. An **API key**, created under **API keys** in Worfilo. Restrict each key to the workflows it needs.
 3. The workflow's ID, shown in the workflow's URL and on its Playground page.
 
 ## Getting started
@@ -40,7 +40,7 @@ Each client is small enough to copy into your own project.
 Clone the repository and configure the example you want to use:
 
 ```sh
-git clone https://github.com/Novalink-AI/examples.git
+git clone https://github.com/Worfilo/examples.git
 cd examples/typescript          # or python, or curl
 cp .env.example .env
 ```
@@ -49,9 +49,9 @@ Set these values in `.env`:
 
 | Variable | Required | Description |
 |---|---|---|
-| `NOVALINK_API_KEY` | Yes | Your API key, beginning with `nvl_` |
-| `NOVALINK_WORKFLOW_ID` | Yes | The ID of the published workflow to run |
-| `NOVALINK_API_URL` | No | API base URL. Defaults to `https://api.novalink.live` |
+| `WORFILO_API_KEY` | Yes | Your API key, beginning with `wfo_` |
+| `WORFILO_WORKFLOW_ID` | Yes | The ID of the published workflow to run |
+| `WORFILO_API_URL` | No | API base URL. Defaults to `https://api.worfilo.com` |
 
 `.env` is excluded from version control by `.gitignore`.
 
@@ -104,7 +104,7 @@ Run a workflow with a single request:
 
 ```http
 POST /v1/workflows/{workflow_id}/runs
-Authorization: Bearer <NOVALINK_API_KEY>
+Authorization: Bearer <WORFILO_API_KEY>
 Content-Type: application/json
 
 { "input": { "message": "Hello" }, "wait": true, "timeout": 30 }
@@ -153,16 +153,16 @@ With `"stream": true`, the response is a stream of Server-Sent Events. Each `dat
 
 Lines beginning with `:` are heartbeats that keep the connection open, and clients should ignore them.
 
-The complete reference is available at [novalink.live/docs/workflow-api](https://novalink.live/docs/workflow-api).
+The complete reference is available at [worfilo.com/docs/workflow-api](https://worfilo.com/docs/workflow-api).
 
 ## Error handling
 
 | Status | Cause | Resolution |
 |---|---|---|
-| `400` | The published workflow failed validation | Fix the workflow in Novalink and publish again |
-| `401` | Missing, invalid or revoked API key | Check `NOVALINK_API_KEY` |
+| `400` | The published workflow failed validation | Fix the workflow in Worfilo and publish again |
+| `401` | Missing, invalid or revoked API key | Check `WORFILO_API_KEY` |
 | `403` | The key is not allowed to run this workflow, or the account is suspended | Use a key scoped to the workflow |
-| `404` | The workflow does not exist for this key's account | Check `NOVALINK_WORKFLOW_ID` |
+| `404` | The workflow does not exist for this key's account | Check `WORFILO_WORKFLOW_ID` |
 | `409` | The workflow has not been published | Publish it in the editor |
 | `429` | Rate limit exceeded | Wait for the number of seconds in the `Retry-After` header |
 
@@ -172,14 +172,14 @@ A run can also finish with `status: "failed"`. The request succeeded in that cas
 
 - Keep API keys on the server. Never ship them in browser or mobile code.
 - Store keys in environment variables or a secrets manager, never in source control.
-- Scope each key to the workflows it runs, and revoke unused keys under **API keys** in Novalink.
+- Scope each key to the workflows it runs, and revoke unused keys under **API keys** in Worfilo.
 
 ## Building with a coding agent
 
-The [Novalink MCP server](https://github.com/Novalink-AI/mcp) lets Claude Code, Cursor, Antigravity and VS Code plan and build workflows, then write this kind of integration into your codebase:
+The [Worfilo MCP server](https://github.com/Worfilo/mcp) lets Claude Code, Cursor, Antigravity and VS Code plan and build workflows, then write this kind of integration into your codebase:
 
 ```sh
-npx @novalinkai/mcp install
+npx @worfilo/mcp install
 ```
 
 ## License

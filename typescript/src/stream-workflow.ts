@@ -1,6 +1,6 @@
-import { Novalink, inputFrom, workflowId } from "./novalink.js";
+import { Worfilo, inputFrom, workflowId } from "./worfilo.js";
 
-for await (const event of new Novalink().stream(workflowId(), inputFrom(process.argv.slice(2)))) {
+for await (const event of new Worfilo().stream(workflowId(), inputFrom(process.argv.slice(2)))) {
   switch (event.type) {
     case "token":
       process.stdout.write(event.text);

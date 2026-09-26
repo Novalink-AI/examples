@@ -1,9 +1,9 @@
 import json
 import sys
 
-from novalink import Novalink, input_from, workflow_id
+from worfilo import Worfilo, input_from, workflow_id
 
-for event in Novalink().stream(workflow_id(), input_from(sys.argv[1:])):
+for event in Worfilo().stream(workflow_id(), input_from(sys.argv[1:])):
     kind = event["type"]
     if kind == "token":
         print(event["text"], end="", flush=True)

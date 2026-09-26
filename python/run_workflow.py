@@ -1,9 +1,9 @@
 import json
 import sys
 
-from novalink import Novalink, input_from, workflow_id
+from worfilo import Worfilo, input_from, workflow_id
 
-run = Novalink().run(workflow_id(), input_from(sys.argv[1:]))
+run = Worfilo().run(workflow_id(), input_from(sys.argv[1:]))
 
 if run["status"] != "succeeded":
     sys.exit(f"Run {run['run_id']} {run['status']}: {run['error']}")

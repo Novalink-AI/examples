@@ -1,6 +1,6 @@
-import { Novalink, inputFrom, workflowId } from "./novalink.js";
+import { Worfilo, inputFrom, workflowId } from "./worfilo.js";
 
-const run = await new Novalink().run(workflowId(), inputFrom(process.argv.slice(2)));
+const run = await new Worfilo().run(workflowId(), inputFrom(process.argv.slice(2)));
 
 if (run.status !== "succeeded") {
   console.error(`Run ${run.run_id} ${run.status}: ${run.error}`);
